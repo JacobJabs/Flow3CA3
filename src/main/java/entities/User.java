@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -18,6 +20,7 @@ import org.mindrot.jbcrypt.BCrypt;
 @Entity
 @Table(name = "users")
 public class User implements Serializable {
+    
 
   private static final long serialVersionUID = 1L;
   @Id
@@ -49,16 +52,20 @@ public class User implements Serializable {
 
   public User() {}
 
-  //TODO Change when password is hashed
-   public boolean verifyPassword(String pw){
-        return(pw.equals(userPass));
+    public User(String userName, String userPass) {
+        this.userName = userName;
+        this.userPass = BCrypt.hashpw(userPass, BCrypt.gensalt());
     }
-
-  public User(String userName, String userPass) {
-    this.userName = userName;
-
-    this.userPass = userPass;
-  }
+    
+    public boolean verifyPassword(String pw) {
+        if (BCrypt.checkpw(pw, userPass)) {
+            System.out.println("It matches");
+            return true;
+        } else {
+            System.out.println("It does not match");
+        }
+        return false;
+    }
 
 
   public String getUserName() {
