@@ -28,7 +28,11 @@ public class LoginEndpointTest {
 
     private static final int SERVER_PORT = 7777;
     private static final String SERVER_URL = "http://localhost/api";
+<<<<<<< HEAD
 //    private static RenameMe r1, r2;
+=======
+    //private static RenameMe r1, r2;
+>>>>>>> f6fc3df7c685eae4bccee222360e930384d9fbd6
 
     static final URI BASE_URI = UriBuilder.fromUri(SERVER_URL).port(SERVER_PORT).build();
     private static HttpServer httpServer;
