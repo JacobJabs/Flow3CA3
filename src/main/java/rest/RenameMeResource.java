@@ -36,9 +36,9 @@ public class RenameMeResource {
         return "{\"count\":"+count+"}";  //Done manually so no need for a DTO
     }
 
-    @Path("spells")
-    @Get
-    @Produces({MediaType.APPLICATION_JSON})
+//    @Path("spells")
+//    @Get
+//    @Produces({MediaType.APPLICATION_JSON})
     
  
 }
