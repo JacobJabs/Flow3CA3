@@ -10,10 +10,10 @@ package entities;
  * @author artin
  */
 public class Person {
-  
-  private String name;
-private String height;
-private String mass;
+
+    private String name;
+    private String height;
+    private String mass;
 
     public Person(String name, String height, String mass) {
         this.name = name;
@@ -45,6 +45,4 @@ private String mass;
         this.mass = mass;
     }
 
-
-    
 }
