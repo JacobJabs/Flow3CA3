@@ -25,38 +25,32 @@ import java.util.concurrent.Future;
  */
 public class fetchFacade {
 
-
-    
-    private ExecutorService executor = Executors.newCachedThreadPool();
-
-
-    
-    public String getAllDataInParalelWithQueue() throws ProtocolException, IOException, InterruptedException, ExecutionException{       
+    public String getAllDataInParalelWithQueue() throws ProtocolException, IOException, InterruptedException, ExecutionException
+    {
         ExecutorService workingJack = Executors.newCachedThreadPool();
         List<Future<String>> futureList = new ArrayList();
-        for(int index = 1;index<119;index++){
+        for (int index = 1; index < 119; index++)
+        {
             final int i = index;
-            Future<String> future = workingJack.submit(new Callable(){
+            Future<String> future = workingJack.submit(new Callable() {
                 @Override
-                public Object call() throws Exception {
+                public Object call() throws Exception
+                {
                     return getDnDData(i);
                 }
             });
             futureList.add(future);
         }
         StringBuilder sb = new StringBuilder("[");
-        for (Future<String> future : futureList) {
-            sb.append(future.get()+",");
+        for (Future<String> future : futureList)
+        {
+            sb.append(future.get() + ",");
         }
         sb.append("]");
         return sb.toString();
-                    
-                    
-                    
 
     }
-    
-    
+
     public String getDnDData(int index) throws MalformedURLException, ProtocolException, IOException
     {
         String fullUrl = "http://dnd5eapi.co/api/spells/" + index;//"/?format=json";
