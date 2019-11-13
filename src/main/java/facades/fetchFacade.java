@@ -5,23 +5,19 @@
  */
 package facades;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import entities.Spell;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Queue;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import javax.validation.constraints.Future;
+import java.util.concurrent.Future;
 
 /**
  *
@@ -29,70 +25,39 @@ import javax.validation.constraints.Future;
  */
 public class fetchFacade {
 
-//    public Map<String, String> getAllDataInParalelWithQueue() throws ProtocolException, IOException, InterruptedException, ExecutionException
-//    {
-//        Map<String, String> results = new HashMap();
-//        Queue<Future<Person>> queue = new ArrayBlockingQueue(PERSONS.length);
-//
-//        ExecutorService workingJack = Executors.newCachedThreadPool();
-//        for (String Spell : PERSONS)
-//        {
-//            Future<Person> future = workingJack.submit(() ->
-//            {
-//                JsonObject jsonObject = new JsonParser().parse(getSwapiData(Spell)).getAsJsonObject();
-//                CoinPair cp = new CoinPair(coinPair, jsonObject.get("price").getAsDouble());
-//           return cp ;
-//            });
-//            queue.add(future);
-//        }
-//        while (!queue.isEmpty())
-//        {
-//            Future<Person> cp = queue.poll();
-//            if (cp.isDone())
-//            {
-//                results.put(cp.get().getName(), cp.get().getPrice());
-//            }
-//            else
-//            {
-//                queue.add(cp);
-//            }
-//        }
-//        return results;
-//    }
+
     
-//    public Map<String, String> getAllDataInParalelWithQueue() throws ProtocolException, IOException, InterruptedException, ExecutionException
-//    {
-//        Map<String, String> results = new HashMap();
-//        Queue<Future<Spell>> queue = new ArrayBlockingQueue(SPELLS.length);
-//        
-//        ExecutorService workingJack = Executors.newCachedThreadPool();
-//        for (String spell : SPELLS)
-//        {
-//            Future<Spell> future = workingJack.submit(() ->
-//            {
-//                JsonObject jsonObject = new JsonParser(),parse(getSwapiData(spell)).getAsJsonObject();
-//                Spell sp = new Spell(spell, jsonObject.get("id,index,name,description").getAsString());
-//                return sp;
-//            });
-//            queue.add(future);
-//        }
-//        while(!queue.isEmpty())
-//        {
-//            Future<Spell> sp = queue.poll();
-//            if(sp.isDone())
-//            {
-//                results.put(sp.get().getName(), sp.get().getIndex,sp.get().getId(),sp.get.getDescription());
-//            }
-//            else
-//            {
-//                queue.add(sp);
-//            }
-//        }
-//        return results;
-//    }
-//    
-//    
-    public String getSwapiData(String index) throws MalformedURLException, ProtocolException, IOException
+    private ExecutorService executor = Executors.newCachedThreadPool();
+
+
+    
+    public String getAllDataInParalelWithQueue() throws ProtocolException, IOException, InterruptedException, ExecutionException{       
+        ExecutorService workingJack = Executors.newCachedThreadPool();
+        List<Future<String>> futureList = new ArrayList();
+        for(int index = 1;index<119;index++){
+            final int i = index;
+            Future<String> future = workingJack.submit(new Callable(){
+                @Override
+                public Object call() throws Exception {
+                    return getDnDData(i);
+                }
+            });
+            futureList.add(future);
+        }
+        StringBuilder sb = new StringBuilder("[");
+        for (Future<String> future : futureList) {
+            sb.append(future.get()+",");
+        }
+        sb.append("]");
+        return sb.toString();
+                    
+                    
+                    
+
+    }
+    
+    
+    public String getDnDData(int index) throws MalformedURLException, ProtocolException, IOException
     {
         String fullUrl = "http://dnd5eapi.co/api/spells/" + index;//"/?format=json";
         URL url = new URL(fullUrl);
@@ -110,11 +75,13 @@ public class fetchFacade {
         }
     }
 
-    public static void main(String[] args) throws ProtocolException, IOException
+    public static void main(String[] args) throws ProtocolException, IOException, InterruptedException, ExecutionException
     {
         fetchFacade facade = new fetchFacade();
-        String satan = facade.getSwapiData("1");
-        
-        System.out.println(facade.getSwapiData("1"));
+//        String satan = facade.getDnDData(1);
+//        
+//        System.out.println(facade.getDnDData(1));
+        String result = facade.getAllDataInParalelWithQueue();
+        System.out.println(result);
     }
 }
