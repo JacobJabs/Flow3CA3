@@ -66,12 +66,12 @@ public class fetchFacade {
 //        Queue<Future<Spell>> queue = new ArrayBlockingQueue(SPELLS.length);
 //        
 //        ExecutorService workingJack = Executors.newCachedThreadPool();
-//        for (String Spell : SPELLS)
+//        for (String spell : SPELLS)
 //        {
 //            Future<Spell> future = workingJack.submit(() ->
 //            {
-//                JsonObject jsonObject = new JsonParser(),parse(getSwapiData(Spell)).getAsJsonObject();
-//                Spell sp = new Spell(spell, jsonObject.get("idk").getAsString());
+//                JsonObject jsonObject = new JsonParser(),parse(getSwapiData(spell)).getAsJsonObject();
+//                Spell sp = new Spell(spell, jsonObject.get("id,index,name,description").getAsString());
 //                return sp;
 //            });
 //            queue.add(future);
