@@ -60,38 +60,38 @@ public class fetchFacade {
 //        return results;
 //    }
     
-    public Map<String, String> getAllDataInParalelWithQueue() throws ProtocolException, IOException, InterruptedException, ExecutionException
-    {
-        Map<String, String> results = new HashMap();
-        Queue<Future<Spell>> queue = new ArrayBlockingQueue(SPELLS.length);
-        
-        ExecutorService workingJack = Executors.newCachedThreadPool();
-        for (String Spell : SPELLS)
-        {
-            Future<Spell> future = workingJack.submit(() ->
-            {
-                JsonObject jsonObject = new JsonParser(),parse(getSwapiData(Spell)).getAsJsonObject();
-                Spell sp = new Spell(spell, jsonObject.get("idk").getAsString());
-                return sp;
-            });
-            queue.add(future);
-        }
-        while(!queue.isEmpty())
-        {
-            Future<Spell> sp = queue.poll();
-            if(sp.isDone())
-            {
-                results.put(sp.get().getName(), sp.get().getIndex,sp.get().getId(),sp.get.getDescription());
-            }
-            else
-            {
-                queue.add(sp);
-            }
-        }
-        return results;
-    }
-    
-    
+//    public Map<String, String> getAllDataInParalelWithQueue() throws ProtocolException, IOException, InterruptedException, ExecutionException
+//    {
+//        Map<String, String> results = new HashMap();
+//        Queue<Future<Spell>> queue = new ArrayBlockingQueue(SPELLS.length);
+//        
+//        ExecutorService workingJack = Executors.newCachedThreadPool();
+//        for (String Spell : SPELLS)
+//        {
+//            Future<Spell> future = workingJack.submit(() ->
+//            {
+//                JsonObject jsonObject = new JsonParser(),parse(getSwapiData(Spell)).getAsJsonObject();
+//                Spell sp = new Spell(spell, jsonObject.get("idk").getAsString());
+//                return sp;
+//            });
+//            queue.add(future);
+//        }
+//        while(!queue.isEmpty())
+//        {
+//            Future<Spell> sp = queue.poll();
+//            if(sp.isDone())
+//            {
+//                results.put(sp.get().getName(), sp.get().getIndex,sp.get().getId(),sp.get.getDescription());
+//            }
+//            else
+//            {
+//                queue.add(sp);
+//            }
+//        }
+//        return results;
+//    }
+//    
+//    
     public String getSwapiData(String index) throws MalformedURLException, ProtocolException, IOException
     {
         String fullUrl = "http://dnd5eapi.co/api/spells/" + index;//"/?format=json";
