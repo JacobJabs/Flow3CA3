@@ -32,13 +32,7 @@ public class fetchFacade {
         for (int index = 1; index < 119; index++)
         {
             final int i = index;
-            Future<String> future = workingJack.submit(new Callable() {
-                @Override
-                public Object call() throws Exception
-                {
-                    return getDnDData(i);
-                }
-            });
+            Future<String> future = workingJack.submit(() -> getDnDData(i));
             futureList.add(future);
         }
         StringBuilder sb = new StringBuilder("[");
