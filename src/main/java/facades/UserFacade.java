@@ -28,6 +28,8 @@ public class UserFacade {
         return instance;
     }
     
+    
+    
     public User getVeryfiedUser(String username, String password) throws AuthenticationException {
         EntityManager em = emf.createEntityManager();
         User user;
